@@ -1,0 +1,59 @@
+name: update-github-pages
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  update-github-pages:
+    runs-on: macOS-latest
+
+    env:
+      GITHUB_PAGES_PATH: .gh-pages
+
+    steps:
+      - name: Use Xcode 12
+        run: |
+          sudo xcode-select -s /Applications/Xcode_12.app/Contents/Developer
+
+      - name: Show versions
+        run: |
+          sw_vers
+          xcodebuild -version
+          swift --version
+
+      - name: Checkout default branch
+        uses: actions/checkout@v2
+
+      - name: Checkout gh-pages branch
+        uses: actions/checkout@v2
+        with:
+          ref: gh-pages
+          path: ${{ env.GITHUB_PAGES_PATH }}
+
+      - name: Cache bundle
+        uses: actions/cache@v2
+        env:
+          cache-name: bundle
+        with:
+          path: .bundle
+          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('Gemfile.lock') }}
+
+      - name: Update bundle
+        run: |
+          make bundle
+
+      - name: Update GitHub Pages
+        run: |
+          make ghpages
+
+      - name: Commit changes
+        run: |
+          cd ${GITHUB_WORKSPACE}/.gh-pages
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          if git commit -m "Update."; then
+            git push
+          fi

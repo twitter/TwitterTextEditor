@@ -1,0 +1,44 @@
+name: check-commit
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  check-commit:
+    runs-on: macOS-latest
+
+    steps:
+      - name: Use Xcode 12
+        run: |
+          sudo xcode-select -s /Applications/Xcode_12.app/Contents/Developer
+
+      - name: Current platform versions
+        run: |
+          sw_vers
+          xcodebuild -version
+          swift --version
+          swiftlint version
+
+      - name: Checkout default branch
+        uses: actions/checkout@v2
+
+      - name: Cache bundle
+        uses: actions/cache@v2
+        env:
+          cache-name: bundle
+        with:
+          path: .bundle
+          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('Gemfile.lock') }}
+
+      - name: Update bundle
+        run: |
+          make bundle
+
+      - name: Run lint
+        run: |
+          make lint
+
+      - name: Run test
+        run: |
+          make test

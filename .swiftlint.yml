@@ -1,0 +1,15 @@
+disabled_rules:
+  - cyclomatic_complexity
+  - file_length
+  - function_body_length
+  - function_parameter_count
+  - identifier_name
+  - line_length
+  - nesting
+  - opening_brace
+  - todo
+  - type_body_length
+
+opt_in_rules:
+  - anyobject_protocol
+  - closure_spacing
