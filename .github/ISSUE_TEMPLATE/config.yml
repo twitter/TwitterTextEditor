@@ -1,0 +1,4 @@
+contact_links:
+  - name: Twitter bug-bounty program
+    url: https://hackerone.com/twitter
+    about: Please report sensitive security issues via Twitter’s bug-bounty program rather than GitHub.
