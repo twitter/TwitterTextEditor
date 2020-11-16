@@ -1,5 +1,5 @@
 # Changelog
 
-## HEAD (Replace this with the release semver and tag the commit with that semver.)
+## 1.0.0
 
 - Initial release.
