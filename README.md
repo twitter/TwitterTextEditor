@@ -15,9 +15,9 @@ At this moment, Twitter Text Editor supports iOS 11.0 and later also macCatalyst
 
 ## Usage
 
-Using Twitter Text Editor is really simple. See also [Examples](Examples/) for actual usage,
-that contains Swift and Objective-C source code to show how to use Twitter Text Editor.
-See [`Examples/README.md`](Examples/README.md) as well.
+Using Twitter Text Editor is straightforward if you're familiar with iOS development. See
+also [Examples](Examples/) for actual usage, that contains Swift and Objective-C source code
+to show how to use Twitter Text Editor. See [`Examples/README.md`](Examples/README.md) as well.
 
 ### Add Twitter Text Editor framework to your project
 
@@ -98,8 +98,8 @@ See [documentation](https://twitter.github.io/TwitterTextEditor/doc/).
 
 ## Use Twitter Text Editor in your project
 
-Twitter Text Editor provides a single view, `TextEditorView` that has the similar API
-as `UITextView` and provides the most of features as a property or a simple delegate callback.
+Twitter Text Editor provides a single view, `TextEditorView`, that has a similar API
+to `UITextView` and provides the most of features as a property or a delegate callback.
 
 Add it to your project as like the other views, and setup using each property or implement delegate callbacks.
 
