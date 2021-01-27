@@ -80,6 +80,16 @@ final class TextEditorBridgeView: UIView {
             textEditorView.text = newValue
         }
     }
+    
+    @objc
+    var placeholderText: String? {
+        get {
+            textEditorView.placeholderText
+        }
+        set {
+            textEditorView.placeholderText = newValue
+        }
+    }
 
     @objc
     var scrollView: UIScrollView {

@@ -86,6 +86,7 @@ NS_ASSUME_NONNULL_BEGIN
     textEditorView.layer.borderWidth = 1.0;
 
     textEditorView.font = [UIFont systemFontOfSize:20.0];
+    textEditorView.placeholderText = @"This is an example of place holder text that can be truncated.";
 
     [self.view addSubview:textEditorView];
 
