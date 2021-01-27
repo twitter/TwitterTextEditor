@@ -35,6 +35,7 @@ public final class Configuration {
      Default to `true`.
      */
     public var isAttributedStringShortDescriptionForLoggingEnabled: Bool = true
+
     /**
      A set of attribute names described in short description for `NSAttributedString`.
      Default to `nil`.

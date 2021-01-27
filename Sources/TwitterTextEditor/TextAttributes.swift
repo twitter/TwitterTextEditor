@@ -33,6 +33,7 @@ public enum TextAttributes {
              A still image attachment represented as `UIImage`.
              */
             case image(UIImage)
+
             /**
              An arbitrary view that represented as `UIView`.
 
@@ -53,6 +54,7 @@ public enum TextAttributes {
          Size of the attachment.
          */
         public let size: CGSize
+
         /**
          The attachment representation.
          */

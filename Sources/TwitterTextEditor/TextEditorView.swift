@@ -25,6 +25,7 @@ public protocol TextEditorViewEditingDelegate: AnyObject {
      - Returns: `YES` to begin editing, `NO` to not.
      */
     func textEditorViewShouldBeginEditing(_ textEditorView: TextEditorView) -> Bool
+
     /**
      A callback when the text editor view did begin editing.
 
@@ -32,6 +33,7 @@ public protocol TextEditorViewEditingDelegate: AnyObject {
        - textEditorView: A delegating `TextEditorView`.
      */
     func textEditorViewDidBeginEditing(_ textEditorView: TextEditorView)
+
     /**
      A callback when the text editor view did end editing.
 
@@ -64,6 +66,7 @@ public protocol TextEditorViewTextInputObserver: AnyObject {
      */
     func textEditorView(_ textEditorView: TextEditorView,
                         didChangeInputPrimaryLanguage inputPrimaryLanguage: String?)
+
     /**
      A callback when the text input for the text editor view did change the base writing direction.
 
@@ -92,6 +95,7 @@ public protocol TextEditorViewEditingContent {
      A current text editing in `String`.
      */
     var text: String { get }
+
     /**
      A current selected range in the `text`.
 
@@ -184,6 +188,7 @@ public protocol TextEditorViewChangeResult {
        - `TextEditorView.text`
      */
     var isTextChanged: Bool { get }
+
     /**
      The `selectedRange` is changed.
 
@@ -238,6 +243,7 @@ public protocol TextEditorViewPasteObserverTransformCompletion {
        - `UITextPasteItem.setNoResult()`
      */
     func transformed()
+
     /**
      The paste observer has completed transforming the pasting or dropping item to the string
      to be pasted or dropped in the text editor view.
@@ -248,6 +254,7 @@ public protocol TextEditorViewPasteObserverTransformCompletion {
        - `UITextPasteItem.setResult(string:)`
      */
     func transformed(to string: String)
+
     /**
      The paste observer has not transformed and the other transforms are needed.
 
@@ -274,6 +281,7 @@ public protocol TextEditorViewPasteObserver: AnyObject {
        - `NSItemProviderReading.readableTypeIdentifiersForItemProvider`
      */
     var acceptableTypeIdentifiers: [String] { get }
+
     /**
      The text editor view asks the observer if it can paste or drop the item.
 
@@ -293,6 +301,7 @@ public protocol TextEditorViewPasteObserver: AnyObject {
        - `transformItemProvider(_:completion:)`
      */
     func canPasteItemProvider(_ itemProvider: NSItemProvider) -> Bool
+
     /**
      The text editor view asks the observer to transform accepted pasting and dropping item.
 
@@ -472,6 +481,7 @@ public final class TextEditorView: UIView {
        - `TextEditorViewEditingDelegate`
      */
     public weak var editingDelegate: TextEditorViewEditingDelegate?
+
     /**
      The observer to observe current text input for text editor view.
 
@@ -479,6 +489,7 @@ public final class TextEditorView: UIView {
        - `TextEditorViewTextInputObserver`
      */
     public weak var textInputObserver: TextEditorViewTextInputObserver?
+
     /**
      The delegate to update editing content.
 
@@ -486,6 +497,7 @@ public final class TextEditorView: UIView {
        - `TextEditorViewEditingContentDelegate`
      */
     public weak var editingContentDelegate: TextEditorViewEditingContentDelegate?
+
     /**
      The delegate to update text attributes.
 
@@ -493,6 +505,7 @@ public final class TextEditorView: UIView {
        - `TextEditorViewTextAttributesDelegate`
      */
     public weak var textAttributesDelegate: TextEditorViewTextAttributesDelegate?
+
     /**
      The observer to observer the changes.
 
