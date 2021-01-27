@@ -375,7 +375,7 @@ public final class TextEditorView: UIView {
 
         textStorage.delegate = self
 
-        textView.delegate = self
+        textView.textViewDelegate = self
         textView.pasteDelegate = self
 
         textView.textDragDelegate = self
