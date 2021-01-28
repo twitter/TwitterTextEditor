@@ -14,7 +14,7 @@
 			<key>Key</key>
 			<string>use_custom_drop_interaction</string>
 			<key>DefaultValue</key>
-			<true/>
+			<false/>
 		</dict>
 	</array>
 </dict>
