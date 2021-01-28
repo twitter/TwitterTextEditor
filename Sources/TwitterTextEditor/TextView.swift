@@ -390,11 +390,11 @@ final class TextView: UITextView {
 
     // MARK: - Delegate forwarding
 
-    lazy var delegateForwarder = TextViewDelegateForwarder()
+    private let delegateForwarder = TextViewDelegateForwarder()
 
     var textViewDelegate: TextViewDelegate? {
         get {
-            delegateForwarder
+            super.delegate as? TextViewDelegate
         }
         set {
             delegateForwarder.textViewDelegate = newValue
@@ -404,7 +404,7 @@ final class TextView: UITextView {
 
     override var delegate: UITextViewDelegate? {
         get {
-            delegateForwarder
+            super.delegate
         }
         set {
             delegateForwarder.scrollViewDelegate = newValue
