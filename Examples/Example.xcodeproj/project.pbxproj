@@ -469,7 +469,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/niw/KeyboardGuide";
 			requirement = {
-				kind = upToNextMajorVersion;
+				kind = upToNextMinorVersion;
 				minimumVersion = 0.2.0;
 			};
 		};
