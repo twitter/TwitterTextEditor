@@ -388,7 +388,7 @@ final class TextView: UITextView {
     }
 #endif
 
-    // MARK: - Delegate forwarding
+    // MARK: - UIScrollView
 
     private let delegateForwarder = TextViewDelegateForwarder()
 

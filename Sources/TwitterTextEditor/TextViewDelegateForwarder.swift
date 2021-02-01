@@ -13,7 +13,7 @@ import UIKit
  delegate forwarding implementations
  */
 
-private let scrollViewDelegateSelectors: [Selector] = [
+private let scrollViewDelegateSelectors: Set<Selector> = [
     #selector(UIScrollViewDelegate.scrollViewDidChangeAdjustedContentInset(_:)),
     #selector(UIScrollViewDelegate.scrollViewDidEndDecelerating(_:)),
     #selector(UIScrollViewDelegate.scrollViewDidEndDragging(_:willDecelerate:)),
@@ -27,7 +27,7 @@ private let scrollViewDelegateSelectors: [Selector] = [
     #selector(UIScrollViewDelegate.scrollViewWillBeginDragging(_:)),
     #selector(UIScrollViewDelegate.scrollViewWillBeginZooming(_:with:)),
     #selector(UIScrollViewDelegate.scrollViewWillEndDragging(_:withVelocity:targetContentOffset:)),
-    #selector(UIScrollViewDelegate.viewForZooming(in:)),
+    #selector(UIScrollViewDelegate.viewForZooming(in:))
 ]
 
 /*
@@ -58,7 +58,7 @@ private class OverloadedSelectorTextAttachment: NSObject, UITextViewDelegate {
     }
 }
 
-private let textViewDelegateSelectors: [Selector] = [
+private let textViewDelegateSelectors: Set<Selector> = [
     #selector(UITextViewDelegate.textView(_:shouldChangeTextIn:replacementText:)),
     #selector(OverloadedSelectorURL.textView(_:shouldInteractWith:in:)),
     #selector(OverloadedSelectorURL.textView(_:shouldInteractWith:in:interaction:)),
@@ -77,7 +77,6 @@ private let textViewDelegateSelectors: [Selector] = [
 class TextViewDelegateForwarder: NSObject, TextViewDelegate {
     weak var scrollViewDelegate: UIScrollViewDelegate?
     weak var textViewDelegate: TextViewDelegate?
-
 
     override func responds(to aSelector: Selector!) -> Bool {
         if scrollViewDelegateSelectors.contains(aSelector) {
