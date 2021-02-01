@@ -387,4 +387,28 @@ final class TextView: UITextView {
         }
     }
 #endif
+
+    // MARK: - UIScrollView
+
+    private let delegateForwarder = TextViewDelegateForwarder()
+
+    var textViewDelegate: TextViewDelegate? {
+        get {
+            super.delegate as? TextViewDelegate
+        }
+        set {
+            delegateForwarder.textViewDelegate = newValue
+            super.delegate = delegateForwarder
+        }
+    }
+
+    override var delegate: UITextViewDelegate? {
+        get {
+            super.delegate
+        }
+        set {
+            delegateForwarder.scrollViewDelegate = newValue
+            super.delegate = delegateForwarder
+        }
+    }
 }
