@@ -9,10 +9,6 @@
 import Foundation
 import UIKit
 
-/**
- delegate forwarding implementations
- */
-
 private let scrollViewDelegateSelectors: Set<Selector> = [
     #selector(UIScrollViewDelegate.scrollViewDidChangeAdjustedContentInset(_:)),
     #selector(UIScrollViewDelegate.scrollViewDidEndDecelerating(_:)),
@@ -35,7 +31,8 @@ private let scrollViewDelegateSelectors: Set<Selector> = [
 
  - Confirmed on Swift 5.2
 
- It seems to no way for discrime overloaded method in selectors, mean cannot discriminate several method such as `textView(_:shouldInteractWith:in:)` from UITextViewDelegate.
+ It seems to no way for discrime overloaded method in selectors, mean cannot discriminate several method such as
+ `textView(_:shouldInteractWith:in:)` from UITextViewDelegate.
  If we have class that implement one of  it from overloaded methods, we can get the selector from the class.
  */
 private class OverloadedSelectorURL: NSObject, UITextViewDelegate {
@@ -59,6 +56,7 @@ private class OverloadedSelectorTextAttachment: NSObject, UITextViewDelegate {
 }
 
 private let textViewDelegateSelectors: Set<Selector> = [
+    // UITextViewDelegate
     #selector(UITextViewDelegate.textView(_:shouldChangeTextIn:replacementText:)),
     #selector(OverloadedSelectorURL.textView(_:shouldInteractWith:in:)),
     #selector(OverloadedSelectorURL.textView(_:shouldInteractWith:in:interaction:)),
@@ -70,7 +68,8 @@ private let textViewDelegateSelectors: Set<Selector> = [
     #selector(UITextViewDelegate.textViewDidEndEditing(_:)),
     #selector(UITextViewDelegate.textViewShouldBeginEditing(_:)),
     #selector(UITextViewDelegate.textViewShouldEndEditing(_:)),
-    #selector(TextViewDelegate.textViewDidUnmarkText(_:)),
+
+    // TextViewDelegate
     #selector(TextViewDelegate.textView(_:didChangeBaseWritingDirection:forRange:))
 ]
 

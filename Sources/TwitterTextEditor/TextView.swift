@@ -16,17 +16,8 @@ import UIKit
  */
 @objc
 protocol TextViewDelegate: UITextViewDelegate {
-    /**
-     Delegate callback when the text view unmarks the marked text.
-
-     - Parameters:
-       - textView: A `TextView` that unmarked the marked text.
-
-     - SeeAlso:
-       - `UITextInput.hasMarkedText`
-     */
-    @objc
-    optional func textViewDidUnmarkText(_ textView: TextView)
+    // See also `TextViewDelegateForwarder`.
+    // You *MUST* sync delegate methods listed in `textViewDelegateSelectors`.
 
     /**
      Delegate callback when the text view changed base writing direction.
@@ -313,14 +304,6 @@ final class TextView: UITextView {
         }
 
         super.deleteBackward()
-    }
-
-    override func unmarkText() {
-        super.unmarkText()
-
-        if let delegate = delegate as? TextViewDelegate {
-            delegate.textViewDidUnmarkText?(self)
-        }
     }
 
     override func setBaseWritingDirection(_ writingDirection: NSWritingDirection, for range: UITextRange) {

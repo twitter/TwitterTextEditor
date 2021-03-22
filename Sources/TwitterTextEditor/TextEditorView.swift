@@ -337,7 +337,8 @@ extension EditingContent: TextEditorViewEditingContent {
  */
 public final class TextEditorView: UIView {
     private let textStorage: NSTextStorage
-    private let textView: TextView
+
+    let textView: TextView
 
     private var userInteractionDidChangeTextViewScheduler: DebounceScheduler!
     private var updatePlaceholderTextScheduler: DebounceScheduler!
@@ -1416,48 +1417,6 @@ public final class TextEditorView: UIView {
         }
         set {
             textView.tintColor = newValue
-        }
-    }
-
-    /**
-     The current keyboard type.
-
-     - SeeAlso:
-       - `UIKeyboardType`
-     */
-    public var keyboardType: UIKeyboardType {
-        get {
-            textView.keyboardType
-        }
-        set {
-            textView.keyboardType = newValue
-        }
-    }
-
-    /**
-     The current keyboard appearance.
-
-     - SeeAlso:
-       - `UIKeyboardAppearance`
-     */
-    public var keyboardAppearance: UIKeyboardAppearance {
-        get {
-            textView.keyboardAppearance
-        }
-        set {
-            textView.keyboardAppearance = newValue
-        }
-    }
-
-    /**
-     The current spell checking type.
-     */
-    public var spellCheckingType: UITextSpellCheckingType {
-        get {
-            textView.spellCheckingType
-        }
-        set {
-            textView.spellCheckingType = newValue
         }
     }
 
