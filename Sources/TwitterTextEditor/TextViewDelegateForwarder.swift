@@ -56,7 +56,6 @@ private class OverloadedSelectorTextAttachment: NSObject, UITextViewDelegate {
 }
 
 private let textViewDelegateSelectors: Set<Selector> = [
-    // UITextViewDelegate
     #selector(UITextViewDelegate.textView(_:shouldChangeTextIn:replacementText:)),
     #selector(OverloadedSelectorURL.textView(_:shouldInteractWith:in:)),
     #selector(OverloadedSelectorURL.textView(_:shouldInteractWith:in:interaction:)),
@@ -68,14 +67,11 @@ private let textViewDelegateSelectors: Set<Selector> = [
     #selector(UITextViewDelegate.textViewDidEndEditing(_:)),
     #selector(UITextViewDelegate.textViewShouldBeginEditing(_:)),
     #selector(UITextViewDelegate.textViewShouldEndEditing(_:)),
-
-    // TextViewDelegate
-    #selector(TextViewDelegate.textView(_:didChangeBaseWritingDirection:forRange:))
 ]
 
-class TextViewDelegateForwarder: NSObject, TextViewDelegate {
+class TextViewDelegateForwarder: NSObject, UITextViewDelegate {
     weak var scrollViewDelegate: UIScrollViewDelegate?
-    weak var textViewDelegate: TextViewDelegate?
+    weak var textViewDelegate: UITextViewDelegate?
 
     override func responds(to aSelector: Selector!) -> Bool {
         if scrollViewDelegateSelectors.contains(aSelector) {

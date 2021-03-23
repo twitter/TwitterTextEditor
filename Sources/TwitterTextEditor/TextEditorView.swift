@@ -22,7 +22,7 @@ public protocol TextEditorViewEditingDelegate: AnyObject {
      - Parameters:
        - textEditorView: A delegating `TextEditorView`.
 
-     - Returns: `YES` to begin editing, `NO` to not.
+     - Returns: `true` to begin editing, `false` to not.
      */
     func textEditorViewShouldBeginEditing(_ textEditorView: TextEditorView) -> Bool
     /**
@@ -377,6 +377,8 @@ public final class TextEditorView: UIView {
         textStorage.delegate = self
 
         textView.textViewDelegate = self
+        textView.textViewTextInputDelegate = self
+
         textView.pasteDelegate = self
 
         textView.textDragDelegate = self
@@ -864,6 +866,19 @@ public final class TextEditorView: UIView {
             }
         }
     }
+
+    /**
+     Enable to return text input to end editing.
+
+     Useful for similar feature using `UITextField` for single line text editing with
+     `TextEditorViewEditingContentDelegate` to replace or filter new line characters.
+
+     - SeeAlso:
+       - `isEditing`
+       - `returnKeyType`
+       - `TextEditorViewEditingContentDelegate`
+     */
+    public var returnToEndEditingEnabled: Bool = false
 
     // MARK: - Properties (Text Input)
 
@@ -1551,14 +1566,14 @@ extension TextEditorView: NSTextStorageDelegate {
     }
 }
 
-// MARK: - TextViewDelegate
+// MARK: - UITextViewDelegate
 
 /// :nodoc:
 extension EditingContent.ChangeResult: TextEditorViewChangeResult {
 }
 
 /// :nodoc:
-extension TextEditorView: TextViewDelegate {
+extension TextEditorView: UITextViewDelegate {
     public func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
         editingDelegate?.textEditorViewShouldBeginEditing(self) ?? true
     }
@@ -1664,6 +1679,27 @@ extension TextEditorView: TextViewDelegate {
         log(type: .debug, "change result: %@", String(describing: changeResult))
         changeObserver?.textEditorView(self, didChangeWithChangeResult: changeResult)
     }
+}
+
+// MARK: - TextViewTextInputDelegate
+
+/// :nodoc:
+extension TextEditorView: TextViewTextInputDelegate {
+    func textViewShouldReturn(_ textView: TextView) -> Bool {
+        log(type: .debug)
+
+        guard returnToEndEditingEnabled else {
+            return true
+        }
+
+        // Return `false` from this delegate will keep `isUserInteractionBeingProcessed` to `true`.
+        // However, setting `isEditing` to `false` calls `textViewDidEndEditing(_:)` that is currently calling
+        // `userInteractionDidChangeTextViewScheduler.perform()`, which eventually sets `isUserInteractionBeingProcessed` to `false`.
+        // See `userInteractionDidChangeTextView()`.
+        isEditing = false
+
+        return false
+    }
 
     func textView(_ textView: TextView,
                   didChangeBaseWritingDirection writingDirection: NSWritingDirection,
@@ -1674,7 +1710,7 @@ extension TextEditorView: TextViewDelegate {
 
         updatePlaceholderTextScheduler.schedule()
 
-        self.textInputObserver?.textEditorView(self, didChangeBaseWritingDirection: writingDirection)
+        textInputObserver?.textEditorView(self, didChangeBaseWritingDirection: writingDirection)
     }
 }
 
