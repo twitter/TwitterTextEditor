@@ -66,7 +66,7 @@ private let textViewDelegateSelectors: Set<Selector> = [
     #selector(UITextViewDelegate.textViewDidChangeSelection(_:)),
     #selector(UITextViewDelegate.textViewDidEndEditing(_:)),
     #selector(UITextViewDelegate.textViewShouldBeginEditing(_:)),
-    #selector(UITextViewDelegate.textViewShouldEndEditing(_:)),
+    #selector(UITextViewDelegate.textViewShouldEndEditing(_:))
 ]
 
 class TextViewDelegateForwarder: NSObject, UITextViewDelegate {
