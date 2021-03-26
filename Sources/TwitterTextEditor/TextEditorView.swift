@@ -940,6 +940,7 @@ public final class TextEditorView: UIView {
         }
     }
     
+    /// :nodoc:
     public override func reloadInputViews() {
         textView.reloadInputViews()
     }
