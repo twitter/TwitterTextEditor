@@ -946,6 +946,21 @@ public final class TextEditorView: UIView {
         }
     }
 
+    /// :nodoc:
+    public override var inputView: UIView? {
+        get {
+            textView.inputView
+        }
+        set {
+            textView.inputView = newValue
+        }
+    }
+
+    /// :nodoc:
+    public override func reloadInputViews() {
+        textView.reloadInputViews()
+    }
+
     /**
      The inset of the `textContentView`.
 
