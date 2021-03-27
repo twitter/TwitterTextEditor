@@ -49,7 +49,7 @@ correct: .bundle
 
 .PHONY: lint
 lint: .bundle
-	$(SWIFTLINT)
+	$(SWIFTLINT) --strict
 	$(BUNDLE) exec rubocop
 
 $(BUILD_PROJECT): Package.swift Sources/**/* Tests/**/*
