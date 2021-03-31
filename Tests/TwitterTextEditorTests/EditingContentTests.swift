@@ -75,7 +75,7 @@ final class EditingContentTests: XCTestCase {
         let updatedContent = try content.update(with: request)
         XCTAssertEqual(updatedContent.text, "purrmeow")
         XCTAssertEqual(updatedContent.selectedRange, NSRange(location: 8, length: 0))
-   }
+    }
 
     func testUpdateWithTextAndSelectedRange() throws {
         let content = try EditingContent(text: "meow", selectedRange: .zero)

@@ -1863,9 +1863,9 @@ extension TextEditorView: TextViewTextPasteDelegate {
                 case .transformed:
                     // UIKit bug workaround
                     DispatchQueue.main.async {
-                       self.textView.withNoSmartInsertDeleteType {
+                        self.textView.withNoSmartInsertDeleteType {
                             item.setNoResult()
-                       }
+                        }
                     }
                 case .transformedToString(let string):
                     item.setResult(string: string)
