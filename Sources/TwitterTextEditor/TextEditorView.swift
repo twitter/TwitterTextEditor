@@ -922,45 +922,6 @@ public final class TextEditorView: UIView {
         textView.textInputView
     }
 
-    private var _inputAccessoryView: UIView?
-
-    /// :nodoc:
-    public override var inputAccessoryView: UIView? {
-        get {
-            _inputAccessoryView
-        }
-        set {
-            _inputAccessoryView = newValue
-        }
-    }
-
-    private var _inputAccessoryViewController: UIInputViewController?
-
-    /// :nodoc:
-    public override var inputAccessoryViewController: UIInputViewController? {
-        get {
-            _inputAccessoryViewController
-        }
-        set {
-            _inputAccessoryViewController = newValue
-        }
-    }
-
-    /// :nodoc:
-    public override var inputView: UIView? {
-        get {
-            textView.inputView
-        }
-        set {
-            textView.inputView = newValue
-        }
-    }
-
-    /// :nodoc:
-    public override func reloadInputViews() {
-        textView.reloadInputViews()
-    }
-
     /**
      The inset of the `textContentView`.
 
@@ -1494,6 +1455,97 @@ public final class TextEditorView: UIView {
         }
 
         textView.panGestureRecognizer.isEnabled = isScrollEnabled
+    }
+
+    // MARK: - UIResponder
+
+    /// :nodoc:
+    public override var canBecomeFirstResponder: Bool {
+        textView.canBecomeFirstResponder
+    }
+
+    /// :nodoc:
+    public override func becomeFirstResponder() -> Bool {
+        textView.becomeFirstResponder()
+    }
+
+    /// :nodoc:
+    public override var canResignFirstResponder: Bool {
+        textView.canResignFirstResponder
+    }
+
+    /// :nodoc:
+    public override func resignFirstResponder() -> Bool {
+        textView.resignFirstResponder()
+    }
+
+    /// :nodoc:
+    public override var isFirstResponder: Bool {
+        textView.isFirstResponder
+    }
+
+    // MARK: - UIResponder (UIResponderInputViewAdditions)
+
+    private var _inputAccessoryView: UIView?
+
+    /// :nodoc:
+    public override var inputAccessoryView: UIView? {
+        get {
+            guard let inputAccessoryView = _inputAccessoryView else {
+                return super.inputAccessoryView
+            }
+            return inputAccessoryView
+        }
+        set {
+            _inputAccessoryView = newValue
+        }
+    }
+
+    private var _inputAccessoryViewController: UIInputViewController?
+
+    /// :nodoc:
+    public override var inputAccessoryViewController: UIInputViewController? {
+        get {
+            guard let inputAccessoryViewController = _inputAccessoryViewController else {
+                return super.inputAccessoryViewController
+            }
+            return inputAccessoryViewController
+        }
+        set {
+            _inputAccessoryViewController = newValue
+        }
+    }
+
+    /// :nodoc:
+    public override var inputView: UIView? {
+        // `UITextView` overrides `inputView` default behavior and it does *NOT* go up the responder chain,
+        // unlike `inputViewController` or `inputAccessoryView`, or `inputAccessoryViewController`.
+        get {
+            textView.inputView
+        }
+        set {
+            textView.inputView = newValue
+        }
+    }
+
+    private var _inputViewController: UIInputViewController?
+
+    /// :nodoc:
+    public override var inputViewController: UIInputViewController? {
+        get {
+            guard let inputViewController = _inputViewController else {
+                return super.inputViewController
+            }
+            return inputViewController
+        }
+        set {
+            _inputViewController = newValue
+        }
+    }
+
+    /// :nodoc:
+    public override func reloadInputViews() {
+        textView.reloadInputViews()
     }
 }
 
