@@ -44,6 +44,7 @@
                   <div class="language">
                     
                     <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">TextEditorView</span> <span class="p">:</span> <span class="kt">UIView</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">TextEditorView</span><span class="p">:</span> <span class="kt">UITextInputTraits</span></code></pre>
 
                   </div>
                 </div>
@@ -573,6 +574,45 @@ It <em>MUST BE</em> within UTF-16 scalars of replaced <code><a href="../Classes/
                           <div class="language">
                             <p class="aside-title">Swift</p>
                             <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">isEditing</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                          </div>
+                        </div>
+                      </section>
+                    </div>
+                  </li>
+                  <li class="item">
+                    <div>
+                      <code>
+                      <a name="/s:17TwitterTextEditor0bC4ViewC25returnToEndEditingEnabledSbvp"></a>
+                      <a name="//apple_ref/swift/Property/returnToEndEditingEnabled" class="dashAnchor"></a>
+                      <a class="token" href="#/s:17TwitterTextEditor0bC4ViewC25returnToEndEditingEnabledSbvp">returnToEndEditingEnabled</a>
+                      </code>
+                    </div>
+                    <div class="height-container">
+                      <div class="pointer-container"></div>
+                      <section class="section">
+                        <div class="pointer"></div>
+                        <div class="abstract">
+                          <p>Enable to return text input to end editing.</p>
+
+<p>Useful for similar feature using <code>UITextField</code> for single line text editing with
+<code><a href="../Protocols/TextEditorViewEditingContentDelegate.html">TextEditorViewEditingContentDelegate</a></code> to replace or filter new line characters.</p>
+<div class="aside aside-see-also">
+    <p class="aside-title">See also</p>
+    <ul>
+<li><code><a href="../Classes/TextEditorView.html#/s:17TwitterTextEditor0bC4ViewC9isEditingSbvp">isEditing</a></code></li>
+<li><code>returnKeyType</code></li>
+<li><code><a href="../Protocols/TextEditorViewEditingContentDelegate.html">TextEditorViewEditingContentDelegate</a></code></li>
+</ul>
+
+</div>
+
+                        </div>
+                        <div class="declaration">
+                          <h4>Declaration</h4>
+                          <div class="language">
+                            <p class="aside-title">Swift</p>
+                            <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">returnToEndEditingEnabled</span><span class="p">:</span> <span class="kt">Bool</span></code></pre>
 
                           </div>
                         </div>
@@ -1459,101 +1499,6 @@ line break mode.</p>
                       </section>
                     </div>
                   </li>
-                  <li class="item">
-                    <div>
-                      <code>
-                      <a name="/s:17TwitterTextEditor0bC4ViewC12keyboardTypeSo010UIKeyboardF0Vvp"></a>
-                      <a name="//apple_ref/swift/Property/keyboardType" class="dashAnchor"></a>
-                      <a class="token" href="#/s:17TwitterTextEditor0bC4ViewC12keyboardTypeSo010UIKeyboardF0Vvp">keyboardType</a>
-                      </code>
-                    </div>
-                    <div class="height-container">
-                      <div class="pointer-container"></div>
-                      <section class="section">
-                        <div class="pointer"></div>
-                        <div class="abstract">
-                          <p>The current keyboard type.</p>
-<div class="aside aside-see-also">
-    <p class="aside-title">See also</p>
-    <ul>
-<li><code>UIKeyboardType</code></li>
-</ul>
-
-</div>
-
-                        </div>
-                        <div class="declaration">
-                          <h4>Declaration</h4>
-                          <div class="language">
-                            <p class="aside-title">Swift</p>
-                            <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">keyboardType</span><span class="p">:</span> <span class="kt">UIKeyboardType</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
-
-                          </div>
-                        </div>
-                      </section>
-                    </div>
-                  </li>
-                  <li class="item">
-                    <div>
-                      <code>
-                      <a name="/s:17TwitterTextEditor0bC4ViewC18keyboardAppearanceSo010UIKeyboardF0Vvp"></a>
-                      <a name="//apple_ref/swift/Property/keyboardAppearance" class="dashAnchor"></a>
-                      <a class="token" href="#/s:17TwitterTextEditor0bC4ViewC18keyboardAppearanceSo010UIKeyboardF0Vvp">keyboardAppearance</a>
-                      </code>
-                    </div>
-                    <div class="height-container">
-                      <div class="pointer-container"></div>
-                      <section class="section">
-                        <div class="pointer"></div>
-                        <div class="abstract">
-                          <p>The current keyboard appearance.</p>
-<div class="aside aside-see-also">
-    <p class="aside-title">See also</p>
-    <ul>
-<li><code>UIKeyboardAppearance</code></li>
-</ul>
-
-</div>
-
-                        </div>
-                        <div class="declaration">
-                          <h4>Declaration</h4>
-                          <div class="language">
-                            <p class="aside-title">Swift</p>
-                            <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">keyboardAppearance</span><span class="p">:</span> <span class="kt">UIKeyboardAppearance</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
-
-                          </div>
-                        </div>
-                      </section>
-                    </div>
-                  </li>
-                  <li class="item">
-                    <div>
-                      <code>
-                      <a name="/s:17TwitterTextEditor0bC4ViewC17spellCheckingTypeSo011UITextSpellfG0Vvp"></a>
-                      <a name="//apple_ref/swift/Property/spellCheckingType" class="dashAnchor"></a>
-                      <a class="token" href="#/s:17TwitterTextEditor0bC4ViewC17spellCheckingTypeSo011UITextSpellfG0Vvp">spellCheckingType</a>
-                      </code>
-                    </div>
-                    <div class="height-container">
-                      <div class="pointer-container"></div>
-                      <section class="section">
-                        <div class="pointer"></div>
-                        <div class="abstract">
-                          <p>The current spell checking type.</p>
-
-                        </div>
-                        <div class="declaration">
-                          <h4>Declaration</h4>
-                          <div class="language">
-                            <p class="aside-title">Swift</p>
-                            <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">spellCheckingType</span><span class="p">:</span> <span class="kt">UITextSpellCheckingType</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
-
-                          </div>
-                        </div>
-                      </section>
-                    </div>
-                  </li>
                 </ul>
               </div>
             </section>
@@ -1648,7 +1593,7 @@ line break mode.</p>
       </div>
       <div class="footer-wrapper">
         <section id="footer">
-          <p>&copy; 2021 <a class="link" href="" target="_blank" rel="external">Twitter, Inc.</a>. All rights reserved. (Last updated: 2021-01-31)</p>
+          <p>&copy; 2021 <a class="link" href="" target="_blank" rel="external">Twitter, Inc.</a>. All rights reserved. (Last updated: 2021-04-10)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </div>
