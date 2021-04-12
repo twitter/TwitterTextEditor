@@ -121,7 +121,7 @@ extension TextEditorView: UITextInputTraits {
     }
 
     /// :nodoc:
-    public var textContentType: UITextContentType {
+    public var textContentType: UITextContentType! {
         get {
             textView.textContentType
         }
