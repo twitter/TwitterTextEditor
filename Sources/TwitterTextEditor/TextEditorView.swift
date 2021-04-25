@@ -1884,7 +1884,8 @@ extension TextEditorView: TextViewTextPasteDelegate {
          UIKit bug workaround
          UIKit behavior note
 
-         - Confirmed on iOS 14.1 and prior.
+         - Confirmed on iOS 14.4 and prior.
+         - Fixed on iOS 14.5.
          - See <https://feedbackassistant.apple.com/feedback/8834804>
 
          `UITextView` inserts an unexpected space when calling `UITextPasteItem.setNoResult` at the cursor
@@ -1913,10 +1914,14 @@ extension TextEditorView: TextViewTextPasteDelegate {
                 // Called on an arbitrary background or main queue.
                 switch result {
                 case .transformed:
-                    // UIKit bug workaround
-                    DispatchQueue.main.async {
-                        self.textView.withNoSmartInsertDeleteType {
-                            item.setNoResult()
+                    if #available(iOS 14.5, *) {
+                        item.setNoResult()
+                    } else {
+                        // UIKit bug workaround
+                        DispatchQueue.main.async {
+                            self.textView.withNoSmartInsertDeleteType {
+                                item.setNoResult()
+                            }
                         }
                     }
                 case .transformedToString(let string):
@@ -1938,12 +1943,16 @@ extension TextEditorView: TextViewTextPasteDelegate {
                 // Called on an arbitrary background or main queue.
                 switch result {
                 case .transformed:
-                    // UIKit bug workaround
-                    DispatchQueue.main.async {
-                        self.textView.withNoSmartInsertDeleteType {
-                            itemToSetResult.setNoResult()
+                    if #available(iOS 14.5, *) {
+                        itemToSetResult.setNoResult()
+                    } else {
+                        // UIKit bug workaround
+                        DispatchQueue.main.async {
+                            self.textView.withNoSmartInsertDeleteType {
+                                itemToSetResult.setNoResult()
+                            }
+                            next(.break)
                         }
-                        next(.break)
                     }
                 case .transformedToString(let string):
                     itemToSetResult.setResult(string: string)
