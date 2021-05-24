@@ -166,6 +166,42 @@ final class SchedulerTest: XCTestCase {
         XCTAssertEqual(results[optional: 1]?.success, "meow")
     }
 
+    func testContentFilterSchedulerShouldPerformOnceAndUseCache() {
+        var performedCount = 0
+        let scheduler = ContentFilterScheduler<String, String> { input, completion in
+            performedCount += 1
+            completion(.success(input))
+        }
+
+        var results = [Result<String, Error>]()
+        let completion = { (result: Result<String, Error>) -> Void in
+            results.append(result)
+        }
+
+        scheduler.schedule("meow", completion: completion)
+
+        wait(for: RunLoop.main)
+
+        XCTAssertEqual(performedCount, 1)
+        XCTAssertEqual(results.count, 1)
+        XCTAssertEqual(results[optional: 0]?.success, "meow")
+
+        // This schedule should be cancelled.
+        scheduler.schedule("purr", completion: completion)
+        // This schedule should use cache.
+        scheduler.schedule("meow", completion: completion)
+
+        XCTAssertEqual(performedCount, 1)
+        XCTAssertEqual(results.count, 2)
+        XCTAssertEqual(results[optional: 1]?.failure as? SchedulerError, .cancelled)
+
+        wait(for: RunLoop.main)
+
+        XCTAssertEqual(performedCount, 1)
+        XCTAssertEqual(results.count, 3)
+        XCTAssertEqual(results[optional: 2]?.success, "meow")
+    }
+
     func testContentFilterSchedulerShouldFailWithNotLatest() {
         var performedCount = 0
         var delayedPerformedCount = 0

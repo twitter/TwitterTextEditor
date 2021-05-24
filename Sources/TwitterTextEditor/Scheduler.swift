@@ -151,7 +151,7 @@ final class ContentFilterScheduler<Input: Equatable, Output> {
             self.schedule = nil
 
             // Cache
-            if let cache = self.cache, cache.key == input {
+            if let cache = self.cache, cache.key == schedule.input {
                 log(type: .debug, "Use cache")
                 schedule.completion(.success(cache.value))
                 return
@@ -173,7 +173,7 @@ final class ContentFilterScheduler<Input: Equatable, Output> {
                 }
 
                 if case let .success(output) = result {
-                    self.cache = Cache(key: input, value: output)
+                    self.cache = Cache(key: schedule.input, value: output)
                 }
 
                 schedule.completion(result)
