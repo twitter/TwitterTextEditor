@@ -9,87 +9,88 @@
 import Foundation
 import UIKit
 
-private let scrollViewDelegateSelectors: Set<Selector> = [
-    #selector(UIScrollViewDelegate.scrollViewDidChangeAdjustedContentInset(_:)),
-    #selector(UIScrollViewDelegate.scrollViewDidEndDecelerating(_:)),
-    #selector(UIScrollViewDelegate.scrollViewDidEndDragging(_:willDecelerate:)),
-    #selector(UIScrollViewDelegate.scrollViewDidEndScrollingAnimation(_:)),
-    #selector(UIScrollViewDelegate.scrollViewDidEndZooming(_:with:atScale:)),
-    #selector(UIScrollViewDelegate.scrollViewDidScroll(_:)),
-    #selector(UIScrollViewDelegate.scrollViewDidScrollToTop(_:)),
-    #selector(UIScrollViewDelegate.scrollViewDidZoom(_:)),
-    #selector(UIScrollViewDelegate.scrollViewShouldScrollToTop(_:)),
-    #selector(UIScrollViewDelegate.scrollViewWillBeginDecelerating(_:)),
-    #selector(UIScrollViewDelegate.scrollViewWillBeginDragging(_:)),
-    #selector(UIScrollViewDelegate.scrollViewWillBeginZooming(_:with:)),
-    #selector(UIScrollViewDelegate.scrollViewWillEndDragging(_:withVelocity:targetContentOffset:)),
-    #selector(UIScrollViewDelegate.viewForZooming(in:))
-]
-
-/*
- Swift compiler bug workaround
-
- - Confirmed on Swift 5.2
-
- It seems to no way for discrime overloaded method in selectors, mean cannot discriminate several method such as
- `textView(_:shouldInteractWith:in:)` from UITextViewDelegate.
- If we have class that implement one of  it from overloaded methods, we can get the selector from the class.
- */
-private class OverloadedSelectorURL: NSObject, UITextViewDelegate {
-    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
-        false
-    }
-
-    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-        false
-    }
-}
-
-private class OverloadedSelectorTextAttachment: NSObject, UITextViewDelegate {
-    func textView(_ textView: UITextView, shouldInteractWith textAttachment: NSTextAttachment, in characterRange: NSRange) -> Bool {
-        false
-    }
-
-    func textView(_ textView: UITextView, shouldInteractWith textAttachment: NSTextAttachment, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-        false
-    }
-}
-
-private let textViewDelegateSelectors: Set<Selector> = [
-    #selector(UITextViewDelegate.textView(_:shouldChangeTextIn:replacementText:)),
-    #selector(OverloadedSelectorURL.textView(_:shouldInteractWith:in:)),
-    #selector(OverloadedSelectorURL.textView(_:shouldInteractWith:in:interaction:)),
-    #selector(OverloadedSelectorTextAttachment.textView(_:shouldInteractWith:in:)),
-    #selector(OverloadedSelectorTextAttachment.textView(_:shouldInteractWith:in:interaction:)),
-    #selector(UITextViewDelegate.textViewDidBeginEditing(_:)),
-    #selector(UITextViewDelegate.textViewDidChange(_:)),
-    #selector(UITextViewDelegate.textViewDidChangeSelection(_:)),
-    #selector(UITextViewDelegate.textViewDidEndEditing(_:)),
-    #selector(UITextViewDelegate.textViewShouldBeginEditing(_:)),
-    #selector(UITextViewDelegate.textViewShouldEndEditing(_:))
-]
-
-class TextViewDelegateForwarder: NSObject, UITextViewDelegate {
+final class TextViewDelegateForwarder: NSObject {
     weak var scrollViewDelegate: UIScrollViewDelegate?
     weak var textViewDelegate: UITextViewDelegate?
+}
 
-    override func responds(to aSelector: Selector!) -> Bool {
-        if scrollViewDelegateSelectors.contains(aSelector) {
-            return scrollViewDelegate?.responds(to: aSelector) ?? false
-        }
-        if textViewDelegateSelectors.contains(aSelector) {
-            return textViewDelegate?.responds(to: aSelector) ?? false
-        }
-        return super.responds(to: aSelector)
+extension TextViewDelegateForwarder: UITextViewDelegate {
+    // This is a subset of `UITextViewDelegate` methods implementations except `UIScrollViewDelegate` methods,
+    // which is known to be used from `TextEditorView`.
+
+    public func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        return textViewDelegate?.textViewShouldBeginEditing?(textView) ?? false
     }
 
-    override func forwardingTarget(for aSelector: Selector!) -> Any? {
-        if scrollViewDelegateSelectors.contains(aSelector) {
-            return scrollViewDelegate
-        }
-        if textViewDelegateSelectors.contains(aSelector) {
-            return textViewDelegate
-        }
-        return super.forwardingTarget(for: aSelector)
+    public func textViewDidBeginEditing(_ textView: UITextView) {
+        textViewDelegate?.textViewDidBeginEditing?(textView)
+    }
+
+    public func textViewDidEndEditing(_ textView: UITextView) {
+        textViewDelegate?.textViewDidEndEditing?(textView)
+    }
+
+    public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        return textViewDelegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text) ?? true
+    }
+
+    public func textViewDidChangeSelection(_ textView: UITextView) {
+        textViewDelegate?.textViewDidChangeSelection?(textView)
+    }
+
+    public func textViewDidChange(_ textView: UITextView) {
+        textViewDelegate?.textViewDidChange?(textView)
+    }
+}
+
+extension TextViewDelegateForwarder: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollViewDelegate?.scrollViewDidScroll?(scrollView)
+    }
+    func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        scrollViewDelegate?.scrollViewDidZoom?(scrollView)
+    }
+
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        scrollViewDelegate?.scrollViewWillBeginDragging?(scrollView)
+    }
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        scrollViewDelegate?.scrollViewWillEndDragging?(scrollView, withVelocity: velocity, targetContentOffset: targetContentOffset)
+    }
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        scrollViewDelegate?.scrollViewDidEndDragging?(scrollView, willDecelerate: decelerate)
+    }
+
+    func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
+        scrollViewDelegate?.scrollViewWillBeginDecelerating?(scrollView)
+    }
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        scrollViewDelegate?.scrollViewDidEndDecelerating?(scrollView)
+    }
+
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        scrollViewDelegate?.scrollViewDidEndScrollingAnimation?(scrollView)
+    }
+
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return scrollViewDelegate?.viewForZooming?(in: scrollView)
+    }
+    func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
+        scrollViewDelegate?.scrollViewWillBeginZooming?(scrollView, with: view)
+    }
+    func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
+        scrollViewDelegate?.scrollViewDidEndZooming?(scrollView, with: view, atScale: scale)
+    }
+
+    func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
+        // If the delegate doesn’t implement this method, `true` is assumed.
+        return scrollViewDelegate?.scrollViewShouldScrollToTop?(scrollView) ?? true
+    }
+    func scrollViewDidScrollToTop(_ scrollView: UIScrollView) {
+        scrollViewDelegate?.scrollViewDidScrollToTop?(scrollView)
+    }
+
+    func scrollViewDidChangeAdjustedContentInset(_ scrollView: UIScrollView) {
+        scrollViewDelegate?.scrollViewDidChangeAdjustedContentInset?(scrollView)
     }
 }

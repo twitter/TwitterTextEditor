@@ -1641,6 +1641,8 @@ extension EditingContent.ChangeResult: TextEditorViewChangeResult {
 
 /// :nodoc:
 extension TextEditorView: UITextViewDelegate {
+    // See `TextViewDelegateForwarder` for the protocol conformance.
+
     public func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
         editingDelegate?.textEditorViewShouldBeginEditing(self) ?? true
     }
