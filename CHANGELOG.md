@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.2
+
+- FIX: `TextViewDelegateForwarder` only forwards limited `UIScrollViewDelegate` methods (#19)
+
 ## 1.1.1
 
 - FIX: `ContentFilterScheduler` is using wrong key for cache.
