@@ -14,6 +14,7 @@ final class TextViewDelegateForwarder: NSObject {
     weak var textViewDelegate: UITextViewDelegate?
 }
 
+/// :nodoc:
 extension TextViewDelegateForwarder: UITextViewDelegate {
     // This is a subset of `UITextViewDelegate` methods implementations except `UIScrollViewDelegate` methods,
     // which is known to be used from `TextEditorView`.
@@ -43,6 +44,7 @@ extension TextViewDelegateForwarder: UITextViewDelegate {
     }
 }
 
+/// :nodoc:
 extension TextViewDelegateForwarder: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         scrollViewDelegate?.scrollViewDidScroll?(scrollView)

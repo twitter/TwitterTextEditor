@@ -9,8 +9,8 @@
 import Foundation
 import UIKit
 
+/// :nodoc:
 extension TextEditorView: UITextInputTraits {
-    /// :nodoc:
     public var autocapitalizationType: UITextAutocapitalizationType {
         get {
             textView.autocapitalizationType
@@ -20,7 +20,6 @@ extension TextEditorView: UITextInputTraits {
         }
     }
 
-    /// :nodoc:
     public var autocorrectionType: UITextAutocorrectionType {
         get {
             textView.autocorrectionType
@@ -30,7 +29,6 @@ extension TextEditorView: UITextInputTraits {
         }
     }
 
-    /// :nodoc:
     public var spellCheckingType: UITextSpellCheckingType {
         get {
             textView.spellCheckingType
@@ -40,7 +38,6 @@ extension TextEditorView: UITextInputTraits {
         }
     }
 
-    /// :nodoc:
     public var smartQuotesType: UITextSmartQuotesType {
         get {
             textView.smartQuotesType
@@ -50,7 +47,6 @@ extension TextEditorView: UITextInputTraits {
         }
     }
 
-    /// :nodoc:
     public var smartDashesType: UITextSmartDashesType {
         get {
             textView.smartDashesType
@@ -60,7 +56,6 @@ extension TextEditorView: UITextInputTraits {
         }
     }
 
-    /// :nodoc:
     public var smartInsertDeleteType: UITextSmartInsertDeleteType {
         get {
             textView.smartInsertDeleteType
@@ -70,7 +65,6 @@ extension TextEditorView: UITextInputTraits {
         }
     }
 
-    /// :nodoc:
     public var keyboardType: UIKeyboardType {
         get {
             textView.keyboardType
@@ -80,7 +74,6 @@ extension TextEditorView: UITextInputTraits {
         }
     }
 
-    /// :nodoc:
     public var keyboardAppearance: UIKeyboardAppearance {
         get {
             textView.keyboardAppearance
@@ -90,7 +83,6 @@ extension TextEditorView: UITextInputTraits {
         }
     }
 
-    /// :nodoc:
     public var returnKeyType: UIReturnKeyType {
         get {
             textView.returnKeyType
@@ -100,7 +92,6 @@ extension TextEditorView: UITextInputTraits {
         }
     }
 
-    /// :nodoc:
     public var enablesReturnKeyAutomatically: Bool {
         get {
             textView.enablesReturnKeyAutomatically
@@ -110,7 +101,6 @@ extension TextEditorView: UITextInputTraits {
         }
     }
 
-    /// :nodoc:
     public var isSecureTextEntry: Bool {
         get {
             textView.isSecureTextEntry
@@ -120,7 +110,6 @@ extension TextEditorView: UITextInputTraits {
         }
     }
 
-    /// :nodoc:
     public var textContentType: UITextContentType! {
         get {
             textView.textContentType
@@ -130,7 +119,6 @@ extension TextEditorView: UITextInputTraits {
         }
     }
 
-    /// :nodoc:
     @available(iOS 12.0, *)
     public var passwordRules: UITextInputPasswordRules? {
         get {

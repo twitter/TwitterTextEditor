@@ -74,7 +74,8 @@ test: $(BUILD_PROJECT)
 		-destination "$(TEST_DESTINATION)" \
 		test
 
-# NOTE: Double quote for `--include` is important to let Jazzy exapand the wildcard.
+# Generate documents, then verify results in `undocumented.json`.
+# NOTE: Double quote for `--include` is important to let Jazzy expand the wildcard.
 $(DOCUMENTATION_OUTPUT_PATH): .bundle .jazzy.yaml $(BUILD_PROJECT) $(DOCUMENTATION_SUPPLIMENT_FILES) $(DOCUMENTATION_SOURCE_FILES)
 	mkdir -p "$@"
 	$(BUNDLE) exec jazzy \
@@ -84,6 +85,7 @@ $(DOCUMENTATION_OUTPUT_PATH): .bundle .jazzy.yaml $(BUILD_PROJECT) $(DOCUMENTATI
 		--use-safe-filenames \
 		--build-tool-arguments "-project,$(BUILD_PROJECT),-scheme,$(BUILD_SCHEME),-sdk,$(BUILD_SDK),-derivedDataPath,$(BUILD_DERIVED_DATA_PATH)" \
 		--include "$(DOCUMENTATION_SOURCE_FILES)"
+	$(BUNDLE) exec $(RUBY) scripts/verify_documentation.rb $(DOCUMENTATION_OUTPUT_PATH)/undocumented.json
 
 .PHONY: doc
 doc: $(DOCUMENTATION_OUTPUT_PATH)
@@ -98,7 +100,7 @@ doc-server: .bundle doc
 
 $(GITHUB_PAGES_DOCUMENTATION_PATH): $(DOCUMENTATION_OUTPUT_PATH)
 	mkdir -p "$@"
-	rsync -av8 --exclude .git --exclude docsets --delete "$<"/ "$@"/
+	rsync -av8 --exclude .git --exclude docsets --exclude undocumented.json --delete "$<"/ "$@"/
 
 .PHONY: ghpages
 ghpages: $(GITHUB_PAGES_DOCUMENTATION_PATH)

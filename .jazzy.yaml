@@ -3,5 +3,6 @@
 # See also `Makefile`.
 
 author: Twitter, Inc.
+hide_documentation_coverage: true
 readme: Resources/Documentation/README.md
 theme: jony
