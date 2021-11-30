@@ -8,7 +8,7 @@ BUILD_SCHEME = $(NAME)-Package
 BUILD_SDK = iphonesimulator
 BUILD_DERIVED_DATA_PATH = .build/derived_data
 
-# Use `use `xcodebuild -showdestinations -scheme ...` for the destinations.
+# Use `xcodebuild -showdestinations -scheme ...` for the destinations.
 # See also <https://github.com/actions/virtual-environments/blob/main/images/macos/macos-10.15-Readme.md>
 # for commonly available destinations.
 TEST_DESTINATION = platform=iOS Simulator,name=iPhone 11
@@ -35,7 +35,11 @@ all: correct test
 clean:
 	git clean -dfX
 
+# NOTE: Apple Silicon workaround
+# On Apple Silicon platform, `--enable-libffi-alloc` is required to use `ffi` gem from `sassc` gem,
+# which is one of dependencies of `jazzy` gem used for documentation.
 .bundle: Gemfile
+	if [[ $$(uname -m) == 'arm64' ]]; then $(BUNDLE) config build.ffi --enable-libffi-alloc; fi
 	$(BUNDLE) install --path "$@"
 	touch "$@"
 
