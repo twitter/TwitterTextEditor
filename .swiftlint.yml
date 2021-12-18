@@ -1,3 +1,6 @@
+excluded:
+  - .build
+
 disabled_rules:
   - cyclomatic_complexity
   - file_length
