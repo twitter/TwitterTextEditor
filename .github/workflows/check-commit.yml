@@ -6,12 +6,12 @@ on:
 
 jobs:
   check-commit:
-    runs-on: macOS-11
+    runs-on: macOS-12
 
     steps:
-      - name: Use Xcode 12.5.1
+      - name: Use Xcode 14.2
         run: |
-          sudo xcode-select -s /Applications/Xcode_12.5.1.app/Contents/Developer
+          sudo xcode-select -s /Applications/Xcode_14.2.app/Contents/Developer
 
       - name: Current platform versions
         run: |
@@ -22,18 +22,6 @@ jobs:
 
       - name: Checkout default branch
         uses: actions/checkout@v2
-
-      - name: Cache bundle
-        uses: actions/cache@v2
-        env:
-          cache-name: bundle
-        with:
-          path: .bundle
-          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('Gemfile.lock') }}
-
-      - name: Update bundle
-        run: |
-          make bundle
 
       - name: Run lint
         run: |

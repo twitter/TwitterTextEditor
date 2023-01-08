@@ -1,8 +1,0 @@
-# This configuration file doesn't contain build related arguments
-# because these are set with runtime values such as SDK path.
-# See also `Makefile`.
-
-author: Twitter, Inc.
-hide_documentation_coverage: true
-readme: Resources/Documentation/README.md
-theme: jony

@@ -2,10 +2,13 @@
 
 A standalone, flexible API that provides a full featured rich text editor for iOS applications.
 
-![Twitter Text Editor](Resources/TwitterTextEditor.png)
+![Twitter Text Editor](Sources/TwitterTextEditor/Documentation.docc/Resources/TwitterTextEditor.png)
+
+It supports safe text modification, attribute annotations such as syntax highlighting, pasting or drag and drop handling.
 
 This provides a robust text attribute update logic, extended text editing events, and safe text input event handling in easy delegate based APIs.
 TwitterTextEditor supports recent versions of iOS.
+
 
 ## Requirements
 
@@ -93,7 +96,7 @@ to add the framework and Run Script phase to your project.
 
 ### Documentation
 
-See [documentation](https://twitter.github.io/TwitterTextEditor/doc/).
+See [documentation](https://twitter.github.io/TwitterTextEditor/documentation/twittertexteditor).
 
 
 ## Use Twitter Text Editor in your project

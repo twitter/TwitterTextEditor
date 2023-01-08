@@ -12,7 +12,7 @@ disabled_rules:
   - opening_brace
   - todo
   - type_body_length
+  - type_name
 
 opt_in_rules:
-  - anyobject_protocol
   - closure_spacing

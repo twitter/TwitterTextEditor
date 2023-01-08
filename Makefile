@@ -3,30 +3,33 @@
 
 NAME = TwitterTextEditor
 
-BUILD_PROJECT = $(NAME).xcodeproj
 BUILD_SCHEME = $(NAME)-Package
-BUILD_SDK = iphonesimulator
+BUILD_DESTINATION = generic/platform=iOS
+BUILD_CONFIGURATION = Debug
 BUILD_DERIVED_DATA_PATH = .build/derived_data
 
 # Use `xcodebuild -showdestinations -scheme ...` for the destinations.
-# See also <https://github.com/actions/virtual-environments/blob/main/images/macos/macos-10.15-Readme.md>
+# See also <https://github.com/actions/runner-images/blob/main/images/macos/macos-12-Readme.md>
 # for commonly available destinations.
-TEST_DESTINATION = platform=iOS Simulator,name=iPhone 11
+TEST_DESTINATION = platform=iOS Simulator,name=iPhone 14
 
-DOCUMENTATION_SOURCE_FILES = Sources/*/*.swift
-DOCUMENTATION_SUPPLIMENT_FILES = Resources/Documentation/*.md
-DOCUMENTATION_OUTPUT_PATH = .build/documentation
+# This path depends on `BUILD_DESTINATION`.
+DOCBUILD_DOCARCHIVE_PATH = $(BUILD_DERIVED_DATA_PATH)/Build/Products/$(BUILD_CONFIGURATION)-iphoneos/$(NAME).doccarchive
 
+GITHUB_REPOSITORY_NAME = $(NAME)
 GITHUB_PAGES_PATH ?= .gh-pages
-GITHUB_PAGES_DOCUMENTATION_PATH = $(GITHUB_PAGES_PATH)/doc
+
+DOCUMENTATION_SERVER_ROOT_PATH = .build/documentation
+DOCUMENTATION_SERVER_PORT = 3000
+# This is simulating how GitHub pages URL is represented, which is `https://$(USERNAME).github.io/$(REPOSITORY_NAME)/`.
+DOCUMENTATION_OUTPUT_PATH = $(DOCUMENTATION_SERVER_ROOT_PATH)/$(GITHUB_REPOSITORY_NAME)
+DOCUMENTATION_ROOT_TARGET_NAME = twittertexteditor
 
 XCODEBUILD = xcodebuild
+DOCC = xcrun docc
+PYTHON3 = xcrun python3
 SWIFT = swift
 SWIFTLINT = swiftlint
-
-RUBY_BIN_PATH = /usr/bin
-RUBY = $(RUBY_BIN_PATH)/ruby
-BUNDLE = $(RUBY_BIN_PATH)/bundle
 
 .PHONY: all
 all: correct test
@@ -35,76 +38,54 @@ all: correct test
 clean:
 	git clean -dfX
 
-# NOTE: Apple Silicon workaround
-# On Apple Silicon platform, `--enable-libffi-alloc` is required to use `ffi` gem from `sassc` gem,
-# which is one of dependencies of `jazzy` gem used for documentation.
-.bundle: Gemfile
-	if [[ $$(uname -m) == 'arm64' ]]; then $(BUNDLE) config build.ffi --enable-libffi-alloc; fi
-	$(BUNDLE) install --path "$@"
-	touch "$@"
-
-.PHONY: bundle
-bundle: .bundle
-
 .PHONY: correct
-correct: .bundle
+correct:
 	$(SWIFTLINT) autocorrect
-	$(BUNDLE) exec rubocop --auto-correct-all
 
 .PHONY: lint
-lint: .bundle
+lint:
 	$(SWIFTLINT) --strict
-	$(BUNDLE) exec rubocop
-
-$(BUILD_PROJECT): Package.swift Sources/**/* Tests/**/*
-	$(SWIFT) package generate-xcodeproj
-	touch "$@"
 
 .PHONY: build
-build: $(BUILD_PROJECT)
+build:
 	$(XCODEBUILD) \
-		-project "$<" \
 		-scheme "$(BUILD_SCHEME)" \
+		-destination "$(BUILD_DESTINATION)" \
+		-configuration "$(BUILD_CONFIGURATION)" \
 		-derivedDataPath "$(BUILD_DERIVED_DATA_PATH)" \
-		-sdk "$(BUILD_SDK)" \
 		build
 
 .PHONY: test
-test: $(BUILD_PROJECT)
+test:
 	$(XCODEBUILD) \
-		-project "$<" \
 		-scheme "$(BUILD_SCHEME)" \
-		-derivedDataPath "$(BUILD_DERIVED_DATA_PATH)" \
 		-destination "$(TEST_DESTINATION)" \
+		-configuration "$(BUILD_CONFIGURATION)" \
+		-derivedDataPath "$(BUILD_DERIVED_DATA_PATH)" \
 		test
 
-# Generate documents, then verify results in `undocumented.json`.
-# NOTE: Double quote for `--include` is important to let Jazzy expand the wildcard.
-$(DOCUMENTATION_OUTPUT_PATH): .bundle .jazzy.yaml $(BUILD_PROJECT) $(DOCUMENTATION_SUPPLIMENT_FILES) $(DOCUMENTATION_SOURCE_FILES)
-	mkdir -p "$@"
-	$(BUNDLE) exec jazzy \
-		--output "$@" \
-		--clean \
-		--module $(NAME) \
-		--use-safe-filenames \
-		--build-tool-arguments "-project,$(BUILD_PROJECT),-scheme,$(BUILD_SCHEME),-sdk,$(BUILD_SDK),-derivedDataPath,$(BUILD_DERIVED_DATA_PATH)" \
-		--include "$(DOCUMENTATION_SOURCE_FILES)"
-	$(BUNDLE) exec $(RUBY) scripts/verify_documentation.rb $(DOCUMENTATION_OUTPUT_PATH)/undocumented.json
+.PHONY: docbuild
+docbuild:
+	$(XCODEBUILD) \
+		-scheme "$(BUILD_SCHEME)" \
+		-destination "$(BUILD_DESTINATION)" \
+		-configuration "$(BUILD_CONFIGURATION)" \
+		-derivedDataPath "$(BUILD_DERIVED_DATA_PATH)" \
+		docbuild
 
 .PHONY: doc
-doc: $(DOCUMENTATION_OUTPUT_PATH)
+doc: docbuild
+	mkdir -p "$(DOCUMENTATION_OUTPUT_PATH)"
+	$(DOCC) process-archive transform-for-static-hosting "$(DOCBUILD_DOCARCHIVE_PATH)" \
+		--output-path "$(DOCUMENTATION_OUTPUT_PATH)" \
+		--hosting-base-path "/$(GITHUB_REPOSITORY_NAME)"
 
 .PHONY: doc-server
-doc-server: .bundle doc
-	@$(BUNDLE) exec $(RUBY) scripts/docserver.rb \
-		-d "$(DOCUMENTATION_OUTPUT_PATH)" \
-		-c "make doc" \
-		$(DOCUMENTATION_SUPPLIMENT_FILES) \
-		$(DOCUMENTATION_SOURCE_FILES)
-
-$(GITHUB_PAGES_DOCUMENTATION_PATH): $(DOCUMENTATION_OUTPUT_PATH)
-	mkdir -p "$@"
-	rsync -av8 --exclude .git --exclude docsets --exclude undocumented.json --delete "$<"/ "$@"/
+doc-server: doc
+	@echo "Documentation is available at <http://localhost:$(DOCUMENTATION_SERVER_PORT)/$(GITHUB_REPOSITORY_NAME)/documentation/$(DOCUMENTATION_ROOT_TARGET_NAME)>"
+	$(PYTHON3) -m http.server --directory "$(DOCUMENTATION_SERVER_ROOT_PATH)" $(DOCUMENTATION_SERVER_PORT)
 
 .PHONY: ghpages
-ghpages: $(GITHUB_PAGES_DOCUMENTATION_PATH)
+ghpages: doc
+	mkdir -p "$(GITHUB_PAGES_PATH)"
+	rsync -av8  --exclude .git --delete "$(DOCUMENTATION_OUTPUT_PATH)"/ "$(GITHUB_PAGES_PATH)"/
