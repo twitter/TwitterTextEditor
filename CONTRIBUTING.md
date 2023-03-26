@@ -81,10 +81,10 @@ Use following command to execute linting.
 $ make lint
 ```
 
-Use following command to auto-correct linting problems.
+Use following command to fix linting problems.
 
 ```
-$ make correct
+$ make fix
 ```
 
 ### Documentation

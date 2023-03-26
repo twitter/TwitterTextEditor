@@ -32,15 +32,15 @@ SWIFT = swift
 SWIFTLINT = swiftlint
 
 .PHONY: all
-all: correct test
+all: fix test
 
 .PHONY: clean
 clean:
 	git clean -dfX
 
-.PHONY: correct
-correct:
-	$(SWIFTLINT) autocorrect
+.PHONY: fix
+fix:
+	$(SWIFTLINT) --fix
 
 .PHONY: lint
 lint:
